@@ -1,29 +1,22 @@
-/* This is an example of how to integrate maximilain into openFrameworks,
- including using audio received for input and audio requested for output.
- 
- 
- You can copy and paste this and use it as a starting example.
- 
- */
-
 #include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){	
     
 	/* This is stuff you always need.*/
-    
-    sampleRate 	= 44100; /* Sampling Rate */
-	bufferSize	= 512; /* Buffer Size. you have to fill this buffer with sound using the for loop in the audioOut method */
+    samplingRate 	= 44100;
+	bufferSize	= 512;
+    /* Buffer Size. you have to fill this buffer with sound using the for loop in the audioOut method */
 
-	/* Anything that you would normally find/put in maximilian's setup() method needs to go here. For example, Sample loading.
-     
-     */
-	sample1.load(ofToDataPath("beat2.wav")); // ofToDataPath tells the load function to look in the data folder
-	
-	ofBackground(255,255,255);
     
-    ofSoundStreamSetup(2,2,this, sampleRate, bufferSize, 4); /* this has to happen at the end of setup - it switches on the DAC */
+	/* Anything that you would normally find/put in maximilian's setup() method needs to go here. For example, Sample loading. */
+    sample.load(ofToDataPath("beat2.wav"));
+    
+    
+    
+
+    ofSoundStreamSetup(2,2,this, samplingRate, bufferSize, 4);
+    /* this has to happen at the end of setup - it switches on the DAC */
 
 
 }
@@ -60,18 +53,18 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
 		 under 'Tutorials'.
 		 
 		 */
+		dSine = mySine.sinewave(440);
 		
-		
         
-		sample=sample1.play(1.+myOsc1.saw(10)); // play back the sample but modulate the speed with a sawtooth.
+		dSample = sample.play(1. + sawOsc.saw(10)); // play back the sample but modulate the speed with a sawtooth.
         
         
-		channel1.stereo(sample,outputs1,0.5); // use the stereo function of the mix object to pan the sample in the middle.
+		mix.stereo(dSample + dSine, outputs,0.5); // use the stereo function of the mix object to pan the sample in the middle.
 		
         /* You may end up with lots of outputs. add them here */
         
-		output[i*nChannels    ] = outputs1[0];//left output
-		output[i*nChannels + 1] = outputs1[1];//right output
+		output[i*nChannels    ] = outputs[0];//left output
+		output[i*nChannels + 1] = outputs[1];//right output
 		
 	}
 	

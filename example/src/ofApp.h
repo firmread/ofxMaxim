@@ -5,7 +5,7 @@
 
 class ofApp : public ofBaseApp{
 	
-    public:
+public:
     void setup();
     void update();
     void draw();
@@ -25,25 +25,15 @@ class ofApp : public ofBaseApp{
     void audioIn(float * input, int bufferSize, int nChannels);
 	
 	int		bufferSize;
-	int		sampleRate;
-	
+	int		samplingRate;
     
-    /* stick you maximilian declarations below
-     
-     For information on how maximilian works, take a look at the example code at
-     
-     http://www.maximilian.strangeloop.co.uk
-     
-     under 'Tutorials'.
-     
-     
-     */
 
-	
-	ofxMaxiOsc myOsc1;
-	ofxMaxiSample sample1;
-	double patch1,sample,outputs1[2];
-	ofxMaxiMix channel1;
+    maxiOsc mySine;
+    
+	maxiOsc sawOsc;
+	maxiSample sample;
+	double dSine,dSample,outputs[2];
+	maxiMix mix;
 
     
 };
